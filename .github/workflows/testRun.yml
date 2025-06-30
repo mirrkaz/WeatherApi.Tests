@@ -10,7 +10,8 @@ on:
       - main
 
 jobs:
-  build-and-test:
+  test:
+    name: Run NUnit Tests
     runs-on: ubuntu-latest
 
     steps:
@@ -28,7 +29,15 @@ jobs:
     - name: Build
       run: dotnet build --no-restore --configuration Debug
 
-    - name: Run Tests
+    - name: Run Tests and Generate TRX Report
       env:
         API_KEY: ${{ secrets.API_KEY }}
-      run: dotnet test --no-build --logger:"console;verbosity=detailed"
+      run: dotnet test --no-build --logger "trx;LogFileName=test-results.trx" --results-directory ./TestResults
+
+    - name: Publish NUnit Test Results to GitHub Actions UI
+      uses: dorny/test-reporter@v1
+      if: always() 
+      with:
+        name: NUnit Test Results
+        path: TestResults/test-results.trx
+        reporter: dotnet-trx
