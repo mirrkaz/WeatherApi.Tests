@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - GA_workflow
+
   pull_request:
     branches:
       - main
