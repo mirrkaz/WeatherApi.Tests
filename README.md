@@ -63,6 +63,33 @@ You can run tests via the CLI or your IDE.
   Use the integrated test explorer to run or debug tests.
 
 ---
+## Running Tests in GitHub Actions
+
+### Workflow Trigger
+
+To manually trigger the tests:
+
+1. Go to the **Actions** tab in your GitHub repository.
+2. Select the workflow named `.NET Tests`
+3. Click the **Run workflow** button in the top-right corner.
+4. Choose the branch and click **Run workflow**.
+
+### Viewing Test Results
+
+After the workflow runs:
+
+1. Go to the **Actions** tab and select the workflow run.
+2. Wait till job is finished `Run WeatherApp Api Tests` then click on `WeatherApp Api Results`
+2. Expand this step to see detailed test results, including which tests passed or failed.
+   - Passed tests are shown with a green checkmark (✅).
+   - Failed tests are shown with a red cross (❌) along with error details.
+
+### Notes
+
+- Test results are parsed and displayed by the [`dorny/test-reporter`](https://github.com/dorny/test-reporter) GitHub Action.
+- The `.trx` test results file is generated during the test run and published to the Actions UI.
+- For best results, ensure your tests generate the `.trx` file correctly, as configured in the workflow.
+
 
 ## Key Features
 
