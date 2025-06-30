@@ -1,0 +1,47 @@
+name: .NET Tests
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Run WeatherApp  Api Tests
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Setup .NET 9 SDK
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Install dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore --configuration Debug
+
+    - name: Run Tests and Generate TRX Report
+      env:
+        API_KEY: ${{ secrets.API_KEY }}
+      run: dotnet test --no-build --logger "trx;LogFileName=test-results.trx" --results-directory ./TestResults
+
+    - name: Publish NUnit Test Results to GitHub Actions UI
+      uses: dorny/test-reporter@v1
+      if: always() 
+      with:
+        name: WeatherApp  Api Results
+        path: TestResults/test-results.trx
+        reporter: dotnet-trx
