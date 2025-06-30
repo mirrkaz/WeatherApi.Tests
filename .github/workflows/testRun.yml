@@ -13,6 +13,10 @@ jobs:
   test:
     name: Run NUnit Tests
     runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
 
     steps:
     - name: Checkout repo
